@@ -1,0 +1,7 @@
+---
+- name: Installer Docker automatiquement
+  hosts: serveur_principal
+  become: yes  # on a besoin des droits root
+
+  roles:
+    - docker

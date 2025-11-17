@@ -1,0 +1,8 @@
+---
+- name: Test connexion Ansible vers localhost
+  hosts: serveur_principal
+  gather_facts: false
+
+  tasks:
+    - name: Ping
+      ansible.builtin.ping:
