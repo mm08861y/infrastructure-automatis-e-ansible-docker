@@ -1,0 +1,16 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for ansible/roles/nginx_test
+- name: Créer le réseau docker du projet
+  docker_network:
+    name: sae502-net
+
+- name: Déployer un conteneur NGINX pour test
+  docker_container:
+    name: nginx-test
+    image: nginx:latest
+    state: started
+    ports:
+      - "8080:80"
+    networks:
+      - name: sae502-net

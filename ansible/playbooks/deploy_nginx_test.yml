@@ -1,0 +1,8 @@
+---
+- name: Déployer un conteneur NGINX test
+  hosts: serveur_principal
+  become: yes
+
+  roles:
+    - nginx_test
+
