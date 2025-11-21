@@ -1,0 +1,47 @@
+---
+- name: Créer répertoire de config DHCP sur l'hôte
+  ansible.builtin.file:
+    path: /opt/dhcp
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Créer fichier de leases s'il n'existe pas
+  ansible.builtin.file:
+    path: /opt/dhcp/dhcpd.leases
+    state: touch
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Déployer le fichier de configuration dhcpd.conf
+  ansible.builtin.template:
+    src: dhcpd.conf.j2
+    dest: /opt/dhcp/dhcpd.conf
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Créer le réseau Docker pour DHCP
+  community.docker.docker_network:
+    name: dhcp-net
+    ipam_config:
+      - subnet: 10.5.0.0/24
+        gateway: 10.5.0.1
+
+- name: Déployer le conteneur DHCP
+  community.docker.docker_container:
+    name: dhcp-server
+    image: networkboot/dhcpd
+    state: started
+    restart_policy: always
+    networks:
+      - name: dhcp-net
+        ipv4_address: 10.5.0.2
+    volumes:
+      - /opt/dhcp:/data
+    command: ["eth0"]
+    capabilities:
+      - NET_ADMIN
+

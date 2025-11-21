@@ -1,0 +1,21 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for ansible/roles/dhcp_client_test
+- name: Déployer un conteneur client DHCP pour test
+  community.docker.docker_container:
+    name: dhcp-client
+    image: debian:stable-slim
+    state: started
+    restart_policy: "no"
+    networks:
+      - name: dhcp-net
+    capabilities:
+      - NET_ADMIN
+    command:
+      - /bin/sh
+      - -c
+      - |
+        apt-get update && \
+        apt-get install -y isc-dhcp-client iproute2 && \
+        dhclient -v eth0 && \
+        sleep 3600

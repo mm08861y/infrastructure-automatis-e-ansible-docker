@@ -1,0 +1,7 @@
+---
+- name: Déployer un client DHCP pour tester le serveur
+  hosts: serveur_principal
+  become: yes
+
+  roles:
+    - dhcp_client_test
