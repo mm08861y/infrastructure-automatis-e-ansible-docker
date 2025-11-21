@@ -1,0 +1,36 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for ansible/roles/prometheus_server
+- name: Créer le réseau Docker monitor-net
+  community.docker.docker_network:
+    name: monitor-net
+    state: present
+
+- name: Créer le dossier de configuration Prometheus
+  ansible.builtin.file:
+    path: /opt/prometheus
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Déployer le fichier prometheus.yml
+  ansible.builtin.template:
+    src: prometheus.yml.j2
+    dest: /opt/prometheus/prometheus.yml
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Déployer Prometheus en conteneur
+  community.docker.docker_container:
+    name: prometheus
+    image: prom/prometheus:latest
+    state: started
+    restart_policy: always
+    ports:
+      - "9090:9090"
+    volumes:
+      - /opt/prometheus:/etc/prometheus
+    networks:
+      - name: monitor-net

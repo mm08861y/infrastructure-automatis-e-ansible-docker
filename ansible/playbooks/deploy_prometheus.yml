@@ -1,0 +1,7 @@
+---
+- name: Déployer Prometheus
+  hosts: localhost
+  become: true
+
+  roles:
+    - prometheus_server

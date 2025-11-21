@@ -1,0 +1,27 @@
+---
+- name: Créer le réseau Docker monitor-net
+  community.docker.docker_network:
+    name: monitor-net
+    state: present
+
+- name: Créer dossier de configuration Grafana
+  ansible.builtin.file:
+    path: /opt/grafana
+    state: directory
+    owner: "472"
+    group: "472"
+    mode: "0755"
+
+- name: Déployer Grafana en conteneur
+  community.docker.docker_container:
+    name: grafana
+    image: grafana/grafana:latest
+    state: started
+    restart_policy: always
+    ports:
+      - "3000:3000"
+    volumes:
+      - /opt/grafana:/var/lib/grafana
+    networks:
+      - name: monitor-net
+
