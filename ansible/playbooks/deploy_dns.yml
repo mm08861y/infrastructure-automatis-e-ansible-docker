@@ -1,0 +1,7 @@
+---
+- name: Déployer le serveur DNS (Bind9) en conteneur
+  hosts: serveur_principal
+  become: yes
+
+  roles:
+    - dns_server

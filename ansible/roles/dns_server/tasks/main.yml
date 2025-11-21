@@ -1,0 +1,47 @@
+---
+- name: Créer répertoire de config DNS sur l'hôte
+  ansible.builtin.file:
+    path: /opt/dns
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Déployer named.conf
+  ansible.builtin.template:
+    src: named.conf.j2
+    dest: /opt/dns/named.conf
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Déployer la zone infra.local
+  ansible.builtin.template:
+    src: db.infra.local.j2
+    dest: /opt/dns/db.infra.local
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Créer le réseau Docker pour DNS
+  community.docker.docker_network:
+    name: dns-net
+    ipam_config:
+      - subnet: 10.6.0.0/24
+        gateway: 10.6.0.1
+
+- name: Déployer le conteneur DNS (Bind9)
+  community.docker.docker_container:
+    name: dns-server
+    image: internetsystemsconsortium/bind9:9.18
+    state: started
+    restart_policy: always
+    ports:
+      - "1053:53/udp"
+      - "1053:53/tcp"
+    networks:
+      - name: dns-net
+        ipv4_address: 10.6.0.2
+    volumes:
+      - /opt/dns:/etc/bind
+

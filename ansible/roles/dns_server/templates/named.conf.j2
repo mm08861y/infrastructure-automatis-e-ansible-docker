@@ -1,0 +1,20 @@
+options {
+    directory "/var/cache/bind";
+
+    listen-on { any; };
+    listen-on-v6 { any; };
+
+    allow-query { any; };
+
+    recursion yes;
+
+    forwarders {
+        8.8.8.8;
+        1.1.1.1;
+    };
+};
+
+zone "infra.local" {
+    type master;
+    file "/etc/bind/db.infra.local";
+};
