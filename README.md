@@ -27,12 +27,7 @@ Toute la configuration (rôles, playbooks, fichiers de config) est versionnée d
   - Déploiement des conteneurs (NGINX, DHCP, DNS, Prometheus, Grafana, client DHCP)
 - **Docker**
   - Un conteneur par service afin d’isoler les rôles réseau
-- **Réseaux Docker**
-  - `sae502-net` : réseau pour le NGINX de test
-  - `dhcp-net` : réseau 10.5.0.0/24 pour le serveur DHCP + client DHCP + DNS
-  - `dns-net` : réseau 10.6.0.0/24 pour le serveur DNS
-  - `monitor-net` : réseau commun à **Prometheus** et **Grafana**
-
+  - 
 ### 1.2. Arborescence du dépôt
 
 ```text
