@@ -3,9 +3,14 @@ Projet SAÉ 5.02 - Infrastructure réseau automatisée avec Ansible, Docker, Pro
 # Infrastructure réseau automatisée avec Ansible & Docker (SAÉ 5.02)
 
 Projet de mise en place d’une petite infrastructure réseau entièrement déployée par **Ansible** et basée sur des **conteneurs Docker**.
+Dans ce projet, l’objectif était de concevoir une infrastructure informatique complète, comme on en trouve dans une entreprise, mais automatisée, reproductible et facile à déployer.
+    donner automatiquement une adresse réseau aux machines
+    leur permettre de se retrouver par un nom
+    héberger des services
+    et surveiller que tout fonctionne dans le temps
 
+    
 Services déployés :
-
 - Un serveur **NGINX** de test (client web)
 - Un serveur **DHCP** (ISC DHCP en conteneur)
 - Un conteneur **client DHCP** de test
