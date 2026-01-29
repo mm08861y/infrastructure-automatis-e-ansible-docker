@@ -1,0 +1,11 @@
+- name: Deploiement complet  de l'infrastructure
+  hosts: localhost
+  become: true
+
+  roles:
+    - docker
+    - dhcp_server
+    - dns_server
+    - prometheus_server
+    - grafana_server
+    - nginx_test
